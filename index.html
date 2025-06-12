@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,7 +73,7 @@ function saveScripts() {
 
   const blob = new Blob([JSON.stringify({
     videoId,
-    zhText: enChunks.join('\n'),
+    frText: enChunks.join('\n'),
     viText: viChunks.join('\n')
   }, null, 2)], { type: 'application/json' });
 
@@ -94,7 +95,7 @@ function loadScriptFile(event) {
     try {
       const data = JSON.parse(e.target.result);
       document.getElementById('videoIdInput').value = data.videoId || '';
-      document.getElementById('scriptEN').value = data.enText || '';
+      document.getElementById('scriptFR').value = data.frText || '';
       document.getElementById('scriptVI').value = data.viText || '';
     } catch (err) {
       alert('Invalid JSON file.');
@@ -182,7 +183,7 @@ let scrollTimeout = null;
       }
     }
     document.querySelectorAll('.line').forEach(el => el.classList.remove('highlight'));
-    if (currentId && currentId.startsWith('zh_')) {
+    if (currentId && currentId.startsWith('fr_')) {
       const activeEl = document.getElementById(currentId);
       if (activeEl) {
         activeEl.classList.add('highlight');
@@ -250,18 +251,18 @@ let scrollTimeout = null;
       });
     }
 
-    const zh = parseTranscript(rawFR);
+    const fr = parseTranscript(rawFR);
     const vi = parseTranscript(rawVI);
     const transcript = document.getElementById('transcript');
     transcript.innerHTML = '';
     transcriptData = [];
 
-    for (let i = 0; i < Math.max(zh.length, vi.length); i++) {
-      if (zh[i]) {
-        const text = `[${Math.floor(zh[i].time / 60)}:${(zh[i].time % 60).toString().padStart(2, '0')}] ${zh[i].text}`;
-        const div = createLineCard('zh_' + i, zh[i].time, text, 'user');
+    for (let i = 0; i < Math.max(fr.length, vi.length); i++) {
+      if (fr[i]) {
+        const text = `[${Math.floor(fr[i].time / 60)}:${(fr[i].time % 60).toString().padStart(2, '0')}] ${fr[i].text}`;
+        const div = createLineCard('fr_' + i, fr[i].time, text, 'user');
         transcript.appendChild(div);
-        transcriptData.push({ id: 'zh_' + i, time: zh[i].time });
+        transcriptData.push({ id: 'fr_' + i, time: fr[i].time });
       }
       if (vi[i]) {
         const text = `[VI] ${vi[i].text}`;
@@ -388,7 +389,7 @@ function saveScripts() {
 
   const blob = new Blob([JSON.stringify({
     videoId,
-    zhText: enChunks.join('\n'),
+    frText: enChunks.join('\n'),
     viText: viChunks.join('\n')
   }, null, 2)], { type: 'application/json' });
 
@@ -410,7 +411,7 @@ function loadScriptFile(event) {
     try {
       const data = JSON.parse(e.target.result);
       document.getElementById('videoIdInput').value = data.videoId || '';
-      document.getElementById('scriptFR').value = data.zhText || '';
+      document.getElementById('scriptFR').value = data.frText || '';
       document.getElementById('scriptVI').value = data.viText || '';
     } catch (err) {
       alert('Invalid JSON file.');
